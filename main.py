@@ -1,0 +1,6 @@
+from Game import *
+
+
+Game()
+
+
