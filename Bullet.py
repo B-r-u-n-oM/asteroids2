@@ -1,6 +1,9 @@
 import pyxel
+
+from Asteroid import Asteroid
 from settings import *
-from math import sin, cos, radians
+from Asteroid import *
+from math import sin, cos, radians, sqrt
 
 
 class Bullet:
@@ -21,19 +24,21 @@ class Bullet:
         if (self.x < 0 or self.x > game["width"]) or (self.y < 0 or self.y > game["height"]):
             bullet["bullets"].remove(self)
 
-    ###################
-"""    
+    def verify_collision(self):
+        points = 0
+        for a in asteroid["asteroids"]:
+            if sqrt((self.x - a.x) ** 2 + (self.y - a.y) ** 2) < a.size:
+                points += 1
+                if a.size == min(asteroid["radius"]):
+                    bullet["bullets"].remove(self)
+                    asteroid["asteroids"].remove(a)
+                else:
+                    ast = asteroid["asteroids"].pop(asteroid["asteroids"].index(a))
+                    asteroid["asteroids"].append(Asteroid(x=ast.x, y=ast.y,
+                                                          rotation=ast.rotation + 45,
+                                                          size=min(asteroid["radius"]), was_divided=True))
+                    asteroid["asteroids"].append(Asteroid(x=ast.x, y=ast.y,
+                                                          rotation=ast.rotation - 45,
+                                                          size=min(asteroid["radius"]), was_divided=True))
+        return points
 
-        def verifyBulletCollision():
-            for bullet in bullets:
-                for ast in asteroids:
-                    if (sqrt((bullet[0] - ast[0]) ** 2 + (bullet[1] - ast[1]) ** 2)) < ast[3]:
-                        if ast[3] == min(asteroidRadius):
-                            bullets.remove(bullet)
-                            asteroids.remove(ast)
-                        else:
-                            x = asteroids.pop(asteroids.index(ast))
-                            asteroids.append([x[0], x[1], x[2] - 45, min(asteroidRadius)])
-                            asteroids.append([x[0], x[1], x[2] + 45, min(asteroidRadius)])
-        ###
-"""

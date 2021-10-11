@@ -11,6 +11,7 @@ class Player:
         self.speed = 0
         self.rotation = player["beginning_rotation"]
         self.newrotation = player["beginning_rotation"]
+        self.points = 0
 
     def draw(self):
         pyxel.rect(self.x, self.y, 2, 2, pyxel.COLOR_ORANGE)
@@ -40,7 +41,13 @@ class Player:
             self.y = 0
 
     def shot(self):
-        if pyxel.btnp(pyxel.KEY_SPACE):
+        if pyxel.btnp(pyxel.KEY_SPACE) and (game["elapsed_time"] - bullet["last_shot"]) >= bullet["limit_time"]:
             bullet["bullets"].append(Bullet(self.x, self.y, self.rotation))
-            #bullet["last_shot"] = game["elapsed_time"]
+            bullet["last_shot"] = game["elapsed_time"]
+
+    def verify_collision(self):
+        for a in asteroid["asteroids"]:
+            if sqrt((a.x - self.x) ** 2 + (a.y - self.y) ** 2) < a.size:
+                return True
+            else: return False
 

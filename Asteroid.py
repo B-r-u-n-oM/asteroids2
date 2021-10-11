@@ -5,25 +5,40 @@ from random import randint, choice
 
 
 class Asteroid:
-    def __init__(self):
-        self.x = 0
-        self.y = 0
-        self.speed = 0
-        self.rotation = -randint(0, 360)
-        self.size = choice(asteroid["radius"])
+    def __init__(self, x=0, y=0, rotation=0, size=0, was_divided=False):
+        self.x = x
+        self.y = y
+        self.speed = asteroid["speed"]
+        self.rotation = rotation
+        self.size = size
+        self.was_divided = was_divided
+        self.spawn()
 
 
     def set_location(self):
-        if choice(["horizontal", "vertical"]) == "vertical":
-            self.x = choice([-self.size, game["width"] + self.size])
-            self.y = randint(-self.size, game["height"] + self.size)
-        elif choice(["horizontal", "vertical"]) == "horizontal":
-            self.x = randint(-self.size, game["height"] + self.size)
-            self.y = choice([-self.size, game["width"] + self.size])
+        if not self.was_divided:
+            self.size = choice(asteroid["radius"])
+            if choice(["H", "V"]) == "V":
+                self.x = choice([-self.size, game["width"] + self.size])
+                self.y = randint(-self.size, game["height"] + self.size)
+                if self.x == -self.size:
+                    self.rotation = randint(-79, 79)
+                else:
+                    self.rotation = randint(101, 259)
+            elif choice(["H", "V"]) == "H":
+                self.x = randint(-self.size, game["height"] + self.size)
+                self.y = choice([-self.size, game["width"] + self.size])
+                if self.y == -self.size:
+                    self.rotation = randint(10, 169)
+                else:
+                    self.rotation = randint(191, 349)
+        if self.x == 0 and self.y == 0: self.set_location()
 
-        if (elapsedTime - lastAst) >= asteroidLimitTime:
-            asteroids.append([astx, asty, astrot, astradius])
-            lastAst = elapsedTime
+    def spawn(self):
+        self.set_location()
+        if (game["elapsed_time"] - asteroid["last_spawn"]) >= asteroid["limit_time"]:
+            asteroid["asteroids"].append(self)
+            asteroid["last_spawn"] = game["elapsed_time"]
 
     def move(self):
         self.x += self.speed * cos(radians(self.rotation)) * game["frame"]

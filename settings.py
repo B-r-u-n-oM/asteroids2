@@ -4,12 +4,14 @@ game = {
     "caption": "Asteroids Game (Version II)",
     "fps": 60,
     "frame": 1/60,
+    "elapsed_time": 0
 }
 
 player = {
     "beginningx": game["width"],
     "beginningy": game["height"],
-    "beginning_rotation": -90
+    "beginning_rotation": -90,
+    "points": 0
 }
 
 bullet = {
