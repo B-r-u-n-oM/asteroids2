@@ -45,6 +45,7 @@ class Player:
             bullet["bullets"].append(Bullet(self.x, self.y, self.rotation))
             bullet["last_shot"] = game["elapsed_time"]
 
+
     def verify_collision(self):
         for a in asteroid["asteroids"]:
             if sqrt((a.x - self.x) ** 2 + (a.y - self.y) ** 2) < a.size:

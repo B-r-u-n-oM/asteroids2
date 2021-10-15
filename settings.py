@@ -4,7 +4,8 @@ game = {
     "caption": "Asteroids Game (Version II)",
     "fps": 60,
     "frame": 1/60,
-    "elapsed_time": 0
+    "elapsed_time": 0,
+    "page": "home"
 }
 
 player = {
