@@ -20,6 +20,7 @@ class Game:
 
     def update(self):
         if game["page"] == "home":
+            pyxel.cls(pyxel.COLOR_BLACK)
             if pyxel.btn(pyxel.KEY_ENTER):game["page"] = "playing"
             elif pyxel.btn(pyxel.KEY_R): game["page"] = "records"
         elif game["page"] == "playing":
@@ -32,7 +33,8 @@ class Game:
             Asteroid()
             for a in asteroid["asteroids"]: a.move(), a.check_limit()
         elif game["page"] == "records":
-            ...
+            pyxel.cls(pyxel.COLOR_BLACK)
+            if pyxel.btn(pyxel.KEY_B): game["page"] = "home"
 
     def draw(self):
         if game["page"] == "home":
@@ -49,5 +51,5 @@ class Game:
             for b in bullet["bullets"]: b.draw()
             for a in asteroid["asteroids"]: a.draw()
         elif game["page"] == "records":
-            ...
+            pyxel.text(1, game["height"] - 10, "(B) Back", pyxel.COLOR_WHITE)
 
