@@ -1,4 +1,4 @@
-# Asteroids (Version II)
+# Asteroids (Not finished)
 
 Hey there! This is a game entirely made in python, using the pyxel extension. Hope you enjoy it!
 
