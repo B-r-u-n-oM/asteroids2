@@ -52,6 +52,12 @@ class Player:
         for a in asteroid["asteroids"]:
             if sqrt((a.x - self.x) ** 2 + (a.y - self.y) ** 2) < a.size: self.lives -= 1
 
+    def reset_record(self):
+        self.lives = 3
+        self.points = 0
+        self.nickname = ""
+        self.speed = 0
+
     def setnickname(self):
         if len(self.nickname) > 15:
             self.nickname = list(self.nickname)
