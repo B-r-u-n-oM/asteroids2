@@ -30,7 +30,47 @@ class Game:
                 r[2] = r[2] + "\n" if "\n" not in r[2] else r[2]
                 line = str(r[0]) + "," + str(r[1]) + "," + r[2]
                 data.write(line)
-        self.player.reset_record()
+
+    def drawhome(self):
+        pyxel.text(game["width"] / 2 - len("Welcome to the") * 2, game["height"] / 3, "Welcome to the",
+                   pyxel.COLOR_WHITE)
+        pyxel.text(game["width"] / 2 - len("Asteroids Game!") * 2, game["height"] / 2, "Asteroids Game!",
+                   pyxel.COLOR_WHITE)
+        pyxel.text(game["width"] / 2 - len("Press Space to start") * 2, game["height"] / 1.5,
+                   "Press Space to start", pyxel.COLOR_YELLOW)
+        pyxel.text(1, game["height"] - 10, "[R]Records", pyxel.COLOR_RED)
+        pyxel.text(game["width"] - 4 * len("[Esc]Exit"), game["height"] - 10, "[Esc]Exit", pyxel.COLOR_WHITE)
+
+    def drawrecords(self):
+        pyxel.text(game["width"] / 2 - len("Records") * 2, 10, "Records",
+                   pyxel.COLOR_RED)
+        pyxel.text(1, game["height"] - 10, "[B] Back", pyxel.COLOR_WHITE)
+
+        with open("records.csv") as data:
+            records = [line.split(",") for line in data]
+        for i in range(len(records)):
+            pyxel.text(10, 20 + 10 * i, "%s- " % records[i][0], pyxel.COLOR_YELLOW)
+            pyxel.text(16, 20 + 10 * i, " " + records[i][1], pyxel.COLOR_WHITE)
+            pyxel.text(game["width"] - 30, 20 + 10 * i, records[i][2], pyxel.COLOR_YELLOW)
+
+    def drawgameover(self):
+        pyxel.text(game["width"] / 2 - len("GAME OVER") * 2, 10, "GAME OVER",
+                   pyxel.COLOR_RED)
+
+        pyxel.text(1, game["height"] / 3, "Points: %s" % self.player.points, pyxel.COLOR_WHITE)
+        pyxel.text(1, game["height"] / 2, "Nickname (max. 15): ", pyxel.COLOR_YELLOW)
+        pyxel.text(1, game["height"] / 1.5, self.player.nickname, pyxel.COLOR_WHITE)
+        pyxel.text(game["width"] / 2 + 10, game["height"] - 10, "[Enter] End", pyxel.COLOR_DARKBLUE)
+
+    def drawplaying(self):
+        self.player.draw()
+        for b in bullet["bullets"]: b.draw()
+        for a in asteroid["asteroids"]: a.draw()
+
+    def reset(self):
+        self.player = Player()
+        asteroid["asteroids"].clear()
+        bullet["bullets"].clear()
 
     def update(self):
         self.count_execution_time()
@@ -44,65 +84,28 @@ class Game:
         elif game["page"] == "playing":
             pyxel.cls(pyxel.COLOR_BLACK)
             self.player.move(), self.player.teleport(), self.player.shot(), self.player.verify_collision()
-            self.player.lives = 0 #JUST FOR TEST -------- remove this after that
-            self.player.points = 30
+            #self.player.lives = 0 #JUST FOR TEST -------- REMOVE THIS
+            #self.player.points = 30 #JUST FOR TEST -------- REMOVE THIS
             if self.player.lives == 0: game["page"] = "gameover"
             for b in bullet["bullets"]:
                 b.move(), b.check_limit()
                 self.player.points += b.verify_collision()
             Asteroid()
             for a in asteroid["asteroids"]: a.move(), a.check_limit()
-
-
         elif game["page"] == "records":
             pyxel.cls(pyxel.COLOR_BLACK)
             if pyxel.btn(pyxel.KEY_B): game["page"] = "home"
-
-
         elif game["page"] == "gameover":
             pyxel.cls(pyxel.COLOR_BLACK)
             self.player.setnickname()
             if pyxel.btn(pyxel.KEY_ENTER):
                 self.addnewrecord(self.player.nickname, self.player.points)
+                self.reset()
                 game["page"] = "home"
 
     def draw(self):
-        if game["page"] == "home":
-            pyxel.text(game["width"] / 2 - len("Welcome to the") * 2, game["height"] / 3, "Welcome to the",
-                       pyxel.COLOR_WHITE)
-            pyxel.text(game["width"] / 2 - len("Asteroids Game!") * 2, game["height"] / 2, "Asteroids Game!",
-                       pyxel.COLOR_WHITE)
-            pyxel.text(game["width"] / 2 - len("Press Space to start") * 2, game["height"] / 1.5,
-                       "Press Space to start", pyxel.COLOR_YELLOW)
-            pyxel.text(1, game["height"] - 10, "[R]Records", pyxel.COLOR_RED)
-            pyxel.text(game["width"] - 4 * len("[Esc]Exit"), game["height"] - 10, "[Esc]Exit", pyxel.COLOR_WHITE)
-
-
-        elif game["page"] == "playing":
-            self.player.draw()
-            for b in bullet["bullets"]: b.draw()
-            for a in asteroid["asteroids"]: a.draw()
-
-
-        elif game["page"] == "records":
-            pyxel.text(game["width"] / 2 - len("Records") * 2, 10, "Records",
-                       pyxel.COLOR_RED)
-            pyxel.text(1, game["height"] - 10, "[B] Back", pyxel.COLOR_WHITE)
-
-            with open("records.csv") as data:
-                records = [line.split(",") for line in data]
-            for i in range(len(records)):
-                pyxel.text(10, 20 + 10 * i, "%s- " % records[i][0], pyxel.COLOR_YELLOW)
-                pyxel.text(16, 20 + 10 * i, " " + records[i][1], pyxel.COLOR_WHITE)
-                pyxel.text(game["width"] - 30, 20 + 10 * i, records[i][2], pyxel.COLOR_YELLOW)
-
-
-        elif game["page"] == "gameover":
-            pyxel.text(game["width"] / 2 - len("GAME OVER") * 2, 10, "GAME OVER",
-                       pyxel.COLOR_RED)
-
-            pyxel.text(1, game["height"] / 3, "Points: %s" % self.player.points, pyxel.COLOR_WHITE)
-            pyxel.text(1, game["height"] / 2, "Nickname (max. 15): ", pyxel.COLOR_YELLOW)
-            pyxel.text(1, game["height"] / 1.5, self.player.nickname, pyxel.COLOR_WHITE)
-            pyxel.text(game["width"]/2 + 10, game["height"] - 10, "[Enter] End", pyxel.COLOR_DARKBLUE)
+        if game["page"] == "home": self.drawhome()
+        elif game["page"] == "playing": self.drawplaying()
+        elif game["page"] == "records": self.drawrecords()
+        elif game["page"] == "gameover": self.drawgameover()
 

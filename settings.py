@@ -12,7 +12,13 @@ player = {
     "beginningx": game["width"],
     "beginningy": game["height"],
     "beginning_rotation": -90,
-    "max_lives": 3
+    "max_lives": 3,
+    "trisize": 6,
+    "beginning_speed": 0,
+    "beginning_points": 0,
+    "nickname": "",
+    "respawn_time": 3,
+    "lastcollision": 0
 }
 
 bullet = {
