@@ -18,7 +18,7 @@ player = {
     "beginning_points": 0,
     "nickname": "",
     "respawn_time": 3,
-    "lastcollision": 0
+    "color": 9
 }
 
 bullet = {

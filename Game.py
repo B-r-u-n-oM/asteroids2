@@ -7,7 +7,6 @@ from settings import *
 class Game:
     def __init__(self):
         self.player = Player()
-        self.elapsedtime = 0
         self.width = game["width"]
         self.height = game["height"]
         self.caption = game["caption"]
@@ -72,21 +71,36 @@ class Game:
         asteroid["asteroids"].clear()
         bullet["bullets"].clear()
 
+    def setpage(self, page):
+        game["page"] = page
+
+    def respawn_player(self):
+        print("spawning a new player!")
+        newplayer = Player(self.player.points, self.player.lives)
+        self.player = newplayer
+
     def update(self):
         self.count_execution_time()
-
         if game["page"] == "home":
             pyxel.cls(pyxel.COLOR_BLACK)
-            if pyxel.btn(pyxel.KEY_SPACE): game["page"] = "playing"
-            elif pyxel.btn(pyxel.KEY_R):  game["page"] = "records"
-
-
+            if pyxel.btn(pyxel.KEY_SPACE): self.setpage("playing")
+            elif pyxel.btn(pyxel.KEY_R):  self.setpage("records")
         elif game["page"] == "playing":
             pyxel.cls(pyxel.COLOR_BLACK)
-            self.player.move(), self.player.teleport(), self.player.shot(), self.player.verify_collision()
-            #self.player.lives = 0 #JUST FOR TEST -------- REMOVE THIS
-            #self.player.points = 30 #JUST FOR TEST -------- REMOVE THIS
-            if self.player.lives == 0: game["page"] = "gameover"
+            self.player.move(), self.player.teleport(), self.player.shot()
+            if self.player.verify_collision():
+                print("collision!")
+                self.player.lives -= 1
+                if self.player.lives > 0:
+                    points = self.player.points
+                    lives = self.player.lives
+                    self.player = Player(points, lives)
+                else: self.setpage("gameover")
+                #For test:
+            #print(self.player.lives)
+            #print("New played spawned: points: %s, lives: %s" % (self.player.points, self.player.lives))
+
+            if self.player.lives == 0: self.setpage("gameover")
             for b in bullet["bullets"]:
                 b.move(), b.check_limit()
                 self.player.points += b.verify_collision()
@@ -94,14 +108,14 @@ class Game:
             for a in asteroid["asteroids"]: a.move(), a.check_limit()
         elif game["page"] == "records":
             pyxel.cls(pyxel.COLOR_BLACK)
-            if pyxel.btn(pyxel.KEY_B): game["page"] = "home"
+            if pyxel.btn(pyxel.KEY_B): self.setpage("home")
         elif game["page"] == "gameover":
             pyxel.cls(pyxel.COLOR_BLACK)
             self.player.setnickname()
             if pyxel.btn(pyxel.KEY_ENTER):
                 self.addnewrecord(self.player.nickname, self.player.points)
                 self.reset()
-                game["page"] = "home"
+                self.setpage("home")
 
     def draw(self):
         if game["page"] == "home": self.drawhome()

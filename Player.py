@@ -5,27 +5,30 @@ from math import sin, cos, radians
 
 
 class Player:
-    def __init__(self):
+    def __init__(self, points=player["beginning_points"],
+                 lives=player["max_lives"], speed=player["beginning_speed"]):
         self.x = player["beginningx"] / 2
         self.y = player["beginningy"] / 2
         self.tricoordinates = {
             "x1": 0, "y1": 0, "x2": 0, "y2": 0, "x3": 0, "y3": 0
         }
         self.trisize = player["trisize"]
-        self.speed = player["beginning_speed"]
+        self.speed = speed
         self.rotation = player["beginning_rotation"]
         self.newrotation = player["beginning_rotation"]
-        self.points = player["beginning_points"]
-        self.lives = player["max_lives"]
+        self.points = points
+        self.lives = lives
         self.nickname = player["nickname"]
-        self.lastcollision = player["lastcollision"]
+        self.color = player["color"]
 
     def draw(self):
         pyxel.trib(
             self.tricoordinates["x1"], self.tricoordinates["y1"],
             self.tricoordinates["x2"], self.tricoordinates["y2"],
             self.tricoordinates["x3"], self.tricoordinates["y3"],
-            pyxel.COLOR_ORANGE)
+            self.color)
+
+        pyxel.pset(self.x, self.y, pyxel.COLOR_WHITE)
 
     def move(self):
         if pyxel.btn(pyxel.KEY_RIGHT) or pyxel.btn(pyxel.KEY_D):
@@ -65,20 +68,11 @@ class Player:
 
     def verify_collision(self):
         for a in asteroid["asteroids"]:
-            if sqrt((a.x - self.x) ** 2 + (a.y - self.y) ** 2) < a.size:
-                self.lives -= 1
-                self.respawn()
+            if sqrt((a.x - self.x) ** 2 + (a.y - self.y) ** 2) < a.size + self.trisize/2:
+                return True
+            else:
+                return False
 
-    def respawn(self):
-
-        self.x = player["beginningx"] / 2
-        self.y = player["beginningy"] / 2
-        self.tricoordinates = {
-            "x1": 0, "y1": 0, "x2": 0, "y2": 0, "x3": 0, "y3": 0
-        }
-        self.speed = player["beginning_speed"]
-        self.rotation = player["beginning_rotation"]
-        self.newrotation = player["beginning_rotation"]
 
     def setnickname(self):
         if len(self.nickname) > 15:
