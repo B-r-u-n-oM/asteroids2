@@ -4,3 +4,7 @@ Hey there! This is a game entirely made in python, using the pyxel extension. Ho
 
 First of all, you must install this extension by the command "pip install pyxel".
 Then, execute the file "main.py".
+
+
+Music:
+Composition by Bruno Ribeiro and Johann Sebastian Bach.
