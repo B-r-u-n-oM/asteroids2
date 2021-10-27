@@ -5,74 +5,100 @@ from math import sin, cos, radians
 
 
 class Player:
-    def __init__(self, points=player["beginning_points"],
-                 lives=player["max_lives"], speed=player["beginning_speed"]):
-        self.x = player["beginningx"] / 2
-        self.y = player["beginningy"] / 2
+    def __init__(self):
+        self.x = player["beginningx"]
+        self.y = player["beginningy"]
         self.tricoordinates = {
             "x1": 0, "y1": 0, "x2": 0, "y2": 0, "x3": 0, "y3": 0
         }
         self.trisize = player["trisize"]
-        self.speed = speed
+        self.speed = player["beginning_speed"]
         self.rotation = player["beginning_rotation"]
         self.newrotation = player["beginning_rotation"]
-        self.points = points
-        self.lives = lives
+        self.points = player["beginning_points"]
+        self.lives = player["max_lives"]
         self.nickname = player["nickname"]
         self.color = player["color"]
+        self.controls_active = player["controls_active"]
+        self.last_death = player["last_death"]
+        self.respawn_time = player["respawn_time"]
 
     def draw(self):
-        pyxel.trib(
-            self.tricoordinates["x1"], self.tricoordinates["y1"],
-            self.tricoordinates["x2"], self.tricoordinates["y2"],
-            self.tricoordinates["x3"], self.tricoordinates["y3"],
-            self.color)
+        if self.controls_active:
+            pyxel.trib(
+                self.tricoordinates["x1"], self.tricoordinates["y1"],
+                self.tricoordinates["x2"], self.tricoordinates["y2"],
+                self.tricoordinates["x3"], self.tricoordinates["y3"],
+                self.color)
 
-        pyxel.pset(self.x, self.y, pyxel.COLOR_WHITE)
+            pyxel.pset(self.x, self.y, pyxel.COLOR_WHITE)
+        else:
+            msg = "Now you have %s live" % self.lives + "s." if self.lives > 1 else "Now you have 1 live."
+            pyxel.text(game["width"] / 2 - len("You crashed.") * 2, game["height"] / 3, "You crashed.",
+                       pyxel.COLOR_YELLOW)
+            pyxel.text(game["width"] / 2 - len(msg) * 2, game["height"] / 2, msg, pyxel.COLOR_YELLOW)
 
     def move(self):
-        if pyxel.btn(pyxel.KEY_RIGHT) or pyxel.btn(pyxel.KEY_D):
-            self.newrotation += 0.5
-            self.rotation = self.newrotation if pyxel.btn(pyxel.KEY_UP) or pyxel.btn(pyxel.KEY_W) else self.rotation
-        elif pyxel.btn(pyxel.KEY_LEFT) or pyxel.btn(pyxel.KEY_A):
-            self.newrotation -= 0.5
-            self.rotation = self.newrotation if pyxel.btn(pyxel.KEY_UP) or pyxel.btn(pyxel.KEY_W) else self.rotation
-        elif pyxel.btn(pyxel.KEY_UP) or pyxel.btn(pyxel.KEY_W):
-            self.rotation = self.newrotation
-            self.speed = 20
+        if self.controls_active:
+            if pyxel.btn(pyxel.KEY_RIGHT) or pyxel.btn(pyxel.KEY_D):
+                self.newrotation += 0.5
+                self.rotation = self.newrotation if pyxel.btn(pyxel.KEY_UP) or pyxel.btn(pyxel.KEY_W) else self.rotation
+            elif pyxel.btn(pyxel.KEY_LEFT) or pyxel.btn(pyxel.KEY_A):
+                self.newrotation -= 0.5
+                self.rotation = self.newrotation if pyxel.btn(pyxel.KEY_UP) or pyxel.btn(pyxel.KEY_W) else self.rotation
+            elif pyxel.btn(pyxel.KEY_UP) or pyxel.btn(pyxel.KEY_W):
+                self.rotation = self.newrotation
+                self.speed = 20
 
-        self.x += self.speed * cos(radians(self.rotation)) * game["frame"]
-        self.y += self.speed * sin(radians(self.rotation)) * game["frame"]
+            self.x += self.speed * cos(radians(self.rotation)) * game["frame"]
+            self.y += self.speed * sin(radians(self.rotation)) * game["frame"]
 
-        self.tricoordinates["x1"] = self.x + cos(radians(self.newrotation)) * (self.trisize/2) / cos(radians(30))
-        self.tricoordinates["y1"] = self.y + sin(radians(self.newrotation)) * (self.trisize/2) / cos(radians(30))
-        self.tricoordinates["x2"] = self.x + cos(radians(self.newrotation + 120)) * (self.trisize/2) / cos(radians(30))
-        self.tricoordinates["y2"] = self.y + sin(radians(self.newrotation + 120)) * (self.trisize/2) / cos(radians(30))
-        self.tricoordinates["x3"] = self.x + cos(radians(self.newrotation + 240)) * (self.trisize/2) / cos(radians(30))
-        self.tricoordinates["y3"] = self.y + sin(radians(self.newrotation + 240)) * (self.trisize/2) / cos(radians(30))
+            self.tricoordinates["x1"] = self.x + cos(radians(self.newrotation)) * (self.trisize/2) / cos(radians(30))
+            self.tricoordinates["y1"] = self.y + sin(radians(self.newrotation)) * (self.trisize/2) / cos(radians(30))
+            self.tricoordinates["x2"] = self.x + cos(radians(self.newrotation + 120)) * (self.trisize/2) / cos(radians(30))
+            self.tricoordinates["y2"] = self.y + sin(radians(self.newrotation + 120)) * (self.trisize/2) / cos(radians(30))
+            self.tricoordinates["x3"] = self.x + cos(radians(self.newrotation + 240)) * (self.trisize/2) / cos(radians(30))
+            self.tricoordinates["y3"] = self.y + sin(radians(self.newrotation + 240)) * (self.trisize/2) / cos(radians(30))
 
     def teleport(self):
-        if self.x < 0:
-            self.x = game["width"]
-        elif self.x > game["width"]:
-            self.x = 0
-        elif self.y < 0:
-            self.y = game["height"]
-        elif self.y > game["height"]:
-            self.y = 0
+        if self.controls_active:
+            if self.x < 0:
+                self.x = game["width"]
+            elif self.x > game["width"]:
+                self.x = 0
+            elif self.y < 0:
+                self.y = game["height"]
+            elif self.y > game["height"]:
+                self.y = 0
 
     def shot(self):
-        if pyxel.btnp(pyxel.KEY_SPACE) and (game["elapsed_time"] - bullet["last_shot"]) >= bullet["limit_time"]:
-            bullet["bullets"].append(Bullet(self.x, self.y, self.rotation))
-            bullet["last_shot"] = game["elapsed_time"]
+        if self.controls_active:
+            if pyxel.btnp(pyxel.KEY_SPACE) and (game["elapsed_time"] - bullet["last_shot"]) >= bullet["limit_time"]:
+                bullet["bullets"].append(Bullet(self.x, self.y, self.newrotation))
+                bullet["last_shot"] = game["elapsed_time"]
 
     def verify_collision(self):
-        for a in asteroid["asteroids"]:
-            if sqrt((a.x - self.x) ** 2 + (a.y - self.y) ** 2) < a.size + self.trisize/2:
-                return True
-            else:
-                return False
+        if self.controls_active:
+            for a in asteroid["asteroids"]:
+                if sqrt((a.x - self.x) ** 2 + (a.y - self.y) ** 2) < a.size + self.trisize:
+                    self.lives -= 1
+                    self.last_death = game["elapsed_time"]
+                    self.controls_active = False
+                    self.reset(hard_reset=False)
 
+    def reset(self, hard_reset=False):
+        self.x = player["beginningx"]
+        self.y = player["beginningy"]
+        self.tricoordinates = {
+            "x1": 0, "y1": 0, "x2": 0, "y2": 0, "x3": 0, "y3": 0
+        }
+        self.speed = player["beginning_speed"]
+        self.rotation = player["beginning_rotation"]
+        self.newrotation = player["beginning_rotation"]
+        if hard_reset:
+            self.points = player["beginning_points"]
+            self.lives = player["max_lives"]
+            self.nickname = player["nickname"]
 
     def setnickname(self):
         if len(self.nickname) > 15:

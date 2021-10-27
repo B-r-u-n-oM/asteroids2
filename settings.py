@@ -9,8 +9,8 @@ game = {
 }
 
 player = {
-    "beginningx": game["width"],
-    "beginningy": game["height"],
+    "beginningx": game["width"]/2,
+    "beginningy": game["height"]/2,
     "beginning_rotation": -90,
     "max_lives": 3,
     "trisize": 6,
@@ -18,7 +18,9 @@ player = {
     "beginning_points": 0,
     "nickname": "",
     "respawn_time": 3,
-    "color": 9
+    "color": 9,
+    "controls_active": True,
+    "last_death": 0
 }
 
 bullet = {

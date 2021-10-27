@@ -30,8 +30,11 @@ class Bullet:
             if sqrt((self.x - a.x) ** 2 + (self.y - a.y) ** 2) < a.size:
                 points += 1
                 if a.size == min(asteroid["radius"]):
-                    bullet["bullets"].remove(self)
-                    asteroid["asteroids"].remove(a)
+                    try:
+                        bullet["bullets"].remove(self)
+                        asteroid["asteroids"].remove(a)
+                    except ValueError:
+                        pass
                 else:
                     ast = asteroid["asteroids"].pop(asteroid["asteroids"].index(a))
                     asteroid["asteroids"].append(Asteroid(x=ast.x, y=ast.y,

@@ -66,18 +66,8 @@ class Game:
         for b in bullet["bullets"]: b.draw()
         for a in asteroid["asteroids"]: a.draw()
 
-    def reset(self):
-        self.player = Player()
-        asteroid["asteroids"].clear()
-        bullet["bullets"].clear()
-
     def setpage(self, page):
         game["page"] = page
-
-    def respawn_player(self):
-        print("spawning a new player!")
-        newplayer = Player(self.player.points, self.player.lives)
-        self.player = newplayer
 
     def update(self):
         self.count_execution_time()
@@ -87,19 +77,9 @@ class Game:
             elif pyxel.btn(pyxel.KEY_R):  self.setpage("records")
         elif game["page"] == "playing":
             pyxel.cls(pyxel.COLOR_BLACK)
-            self.player.move(), self.player.teleport(), self.player.shot()
-            if self.player.verify_collision():
-                print("collision!")
-                self.player.lives -= 1
-                if self.player.lives > 0:
-                    points = self.player.points
-                    lives = self.player.lives
-                    self.player = Player(points, lives)
-                else: self.setpage("gameover")
-                #For test:
-            #print(self.player.lives)
-            #print("New played spawned: points: %s, lives: %s" % (self.player.points, self.player.lives))
-
+            if not self.player.controls_active and (game["elapsed_time"] - self.player.last_death) > self.player.respawn_time:
+                self.player.controls_active = True
+            self.player.shot(), self.player.move(), self.player.teleport(), self.player.verify_collision()
             if self.player.lives == 0: self.setpage("gameover")
             for b in bullet["bullets"]:
                 b.move(), b.check_limit()
@@ -114,7 +94,7 @@ class Game:
             self.player.setnickname()
             if pyxel.btn(pyxel.KEY_ENTER):
                 self.addnewrecord(self.player.nickname, self.player.points)
-                self.reset()
+                self.player.reset(hard_reset=True)
                 self.setpage("home")
 
     def draw(self):
