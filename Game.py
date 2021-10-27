@@ -12,6 +12,8 @@ class Game:
         self.caption = game["caption"]
         self.fps = game["fps"]
         pyxel.init(self.width, self.height, caption=self.caption, fps=self.fps, quit_key=pyxel.KEY_ESCAPE)
+        pyxel.load("Minuet_in_G.pyxres")
+        pyxel.playm(0, loop=True)
         pyxel.run(self.update, self.draw)
 
     def count_execution_time(self):

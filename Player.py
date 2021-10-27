@@ -32,7 +32,7 @@ class Player:
                 self.color)
 
             pyxel.pset(self.x, self.y, pyxel.COLOR_WHITE)
-        else:
+        elif self.lives < player["max_lives"]:
             msg = "Now you have %s live" % self.lives + "s." if self.lives > 1 else "Now you have 1 live."
             pyxel.text(game["width"] / 2 - len("You crashed.") * 2, game["height"] / 3, "You crashed.",
                        pyxel.COLOR_YELLOW)
@@ -80,7 +80,7 @@ class Player:
     def verify_collision(self):
         if self.controls_active:
             for a in asteroid["asteroids"]:
-                if sqrt((a.x - self.x) ** 2 + (a.y - self.y) ** 2) < a.size + self.trisize:
+                if sqrt((a.x - self.x) ** 2 + (a.y - self.y) ** 2) < a.size + self.trisize/2:
                     self.lives -= 1
                     self.last_death = game["elapsed_time"]
                     self.controls_active = False
@@ -99,6 +99,8 @@ class Player:
             self.points = player["beginning_points"]
             self.lives = player["max_lives"]
             self.nickname = player["nickname"]
+            asteroid["asteroids"].clear()
+            bullet["bullets"].clear()
 
     def setnickname(self):
         if len(self.nickname) > 15:
