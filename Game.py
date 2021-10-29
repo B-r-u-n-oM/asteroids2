@@ -1,6 +1,7 @@
 import pyxel
 from Player import *
 from Asteroid import *
+from Enemy import *
 from settings import *
 
 
@@ -13,7 +14,7 @@ class Game:
         self.fps = game["fps"]
         pyxel.init(self.width, self.height, caption=self.caption, fps=self.fps, quit_key=pyxel.KEY_ESCAPE)
         pyxel.load("Minuet_in_G.pyxres")
-        pyxel.playm(0, loop=True)
+        #pyxel.playm(0, loop=True)
         pyxel.run(self.update, self.draw)
 
     def count_execution_time(self):
@@ -67,16 +68,18 @@ class Game:
         self.player.draw()
         for b in bullet["bullets"]: b.draw()
         for a in asteroid["asteroids"]: a.draw()
+        for e in enemy["enemies"]: e.draw()
 
-    def setpage(self, page):
-        game["page"] = page
+    def setpage(self, page, key=""):
+        if key == "": game["page"] = page
+        elif pyxel.btn(key): game["page"] = page
 
     def update(self):
         self.count_execution_time()
         if game["page"] == "home":
             pyxel.cls(pyxel.COLOR_BLACK)
-            if pyxel.btn(pyxel.KEY_SPACE): self.setpage("playing")
-            elif pyxel.btn(pyxel.KEY_R):  self.setpage("records")
+            self.setpage("playing", pyxel.KEY_SPACE)
+            self.setpage("records", pyxel.KEY_R)
         elif game["page"] == "playing":
             pyxel.cls(pyxel.COLOR_BLACK)
             if not self.player.controls_active and (game["elapsed_time"] - self.player.last_death) > self.player.respawn_time:
@@ -86,11 +89,12 @@ class Game:
             for b in bullet["bullets"]:
                 b.move(), b.check_limit()
                 self.player.points += b.verify_collision()
-            Asteroid()
+            Asteroid(), Enemy()
             for a in asteroid["asteroids"]: a.move(), a.check_limit()
+            for e in enemy["enemies"]: e.move()
         elif game["page"] == "records":
             pyxel.cls(pyxel.COLOR_BLACK)
-            if pyxel.btn(pyxel.KEY_B): self.setpage("home")
+            self.setpage("home", pyxel.KEY_B)
         elif game["page"] == "gameover":
             pyxel.cls(pyxel.COLOR_BLACK)
             self.player.setnickname()

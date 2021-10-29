@@ -1,3 +1,5 @@
+import pyxel
+
 game = {
     "width": 120,
     "height": 80,
@@ -24,8 +26,8 @@ player = {
 }
 
 bullet = {
-    "speed": 100,
-    "limit_time": 0.3,
+    "speed": 200,
+    "limit_time": 0.1,
     "last_shot": 0,
     "bullets": []
 }
@@ -36,5 +38,15 @@ asteroid = {
     "limit_time": 1,
     "last_spawn": 0,
     "radius": [2, 3, 4]
+}
+
+enemy = {
+    "enemies": [],
+    "enemies_bullets": [],
+    "speed": 20,
+    "color": pyxel.COLOR_RED,
+    "trisize": 4,
+    "last_spawn": 0,
+    "limit_time": 1,
 }
 

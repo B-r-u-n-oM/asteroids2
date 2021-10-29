@@ -2,5 +2,3 @@ from Game import *
 
 
 Game()
-
-

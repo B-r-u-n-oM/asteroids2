@@ -30,8 +30,6 @@ class Player:
                 self.tricoordinates["x2"], self.tricoordinates["y2"],
                 self.tricoordinates["x3"], self.tricoordinates["y3"],
                 self.color)
-
-            pyxel.pset(self.x, self.y, pyxel.COLOR_WHITE)
         elif self.lives < player["max_lives"]:
             msg = "Now you have %s live" % self.lives + "s." if self.lives > 1 else "Now you have 1 live."
             pyxel.text(game["width"] / 2 - len("You crashed.") * 2, game["height"] / 3, "You crashed.",
@@ -41,14 +39,17 @@ class Player:
     def move(self):
         if self.controls_active:
             if pyxel.btn(pyxel.KEY_RIGHT) or pyxel.btn(pyxel.KEY_D):
-                self.newrotation += 0.5
-                self.rotation = self.newrotation if pyxel.btn(pyxel.KEY_UP) or pyxel.btn(pyxel.KEY_W) else self.rotation
+                self.newrotation += 1.5
+                self.rotation = self.newrotation if pyxel.btn(pyxel.KEY_UP) or pyxel.btn(pyxel.KEY_W) or pyxel.btn(pyxel.KEY_DOWN) or pyxel.btn(pyxel.KEY_S) else self.rotation
             elif pyxel.btn(pyxel.KEY_LEFT) or pyxel.btn(pyxel.KEY_A):
-                self.newrotation -= 0.5
-                self.rotation = self.newrotation if pyxel.btn(pyxel.KEY_UP) or pyxel.btn(pyxel.KEY_W) else self.rotation
+                self.newrotation -= 1.5
+                self.rotation = self.newrotation if pyxel.btn(pyxel.KEY_UP) or pyxel.btn(pyxel.KEY_W) or pyxel.btn(pyxel.KEY_DOWN) or pyxel.btn(pyxel.KEY_S) else self.rotation
             elif pyxel.btn(pyxel.KEY_UP) or pyxel.btn(pyxel.KEY_W):
                 self.rotation = self.newrotation
-                self.speed = 20
+                self.speed += 0.5
+            elif pyxel.btn(pyxel.KEY_DOWN) or pyxel.btn(pyxel.KEY_S):
+                self.rotation = self.newrotation
+                self.speed -= 0.5
 
             self.x += self.speed * cos(radians(self.rotation)) * game["frame"]
             self.y += self.speed * sin(radians(self.rotation)) * game["frame"]
