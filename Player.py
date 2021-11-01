@@ -30,6 +30,9 @@ class Player:
                 self.tricoordinates["x2"], self.tricoordinates["y2"],
                 self.tricoordinates["x3"], self.tricoordinates["y3"],
                 self.color)
+            pyxel.line(self.tricoordinates["x2"], self.tricoordinates["y2"],
+                       self.tricoordinates["x3"], self.tricoordinates["y3"],
+                       pyxel.COLOR_BLACK)
         elif self.lives < player["max_lives"]:
             msg = "Now you have %s live" % self.lives + "s." if self.lives > 1 else "Now you have 1 live."
             pyxel.text(game["width"] / 2 - len("You crashed.") * 2, game["height"] / 3, "You crashed.",
@@ -75,17 +78,30 @@ class Player:
     def shot(self):
         if self.controls_active:
             if pyxel.btnp(pyxel.KEY_SPACE) and (game["elapsed_time"] - bullet["last_shot"]) >= bullet["limit_time"]:
-                bullet["bullets"].append(Bullet(self.x, self.y, self.newrotation, pyxel.COLOR_GREEN))
+                bullet["bullets"].append(Bullet(self.x, self.y, self.newrotation, pyxel.COLOR_GREEN, self))
                 bullet["last_shot"] = game["elapsed_time"]
 
     def verify_collision(self):
+        def execute():
+            self.lives -= 1
+            self.last_death = game["elapsed_time"]
+            self.controls_active = False
+            self.reset(hard_reset=False)
+
         if self.controls_active:
             for a in asteroid["asteroids"]:
                 if sqrt((a.x - self.x) ** 2 + (a.y - self.y) ** 2) < a.size + self.trisize/2:
-                    self.lives -= 1
-                    self.last_death = game["elapsed_time"]
-                    self.controls_active = False
-                    self.reset(hard_reset=False)
+                    execute()
+                    break
+            for b in bullet["bullets"]:
+                if (sqrt((b.x - self.x) ** 2 + (b.y - self.y) ** 2) < self.trisize / 2) and b.owner != self:
+                    execute()
+                    break
+            for e in enemy["enemies"]:
+                if sqrt((e.x - self.x) ** 2 + (e.y - self.y) ** 2) < self.trisize/2:
+                    enemy["enemies"].remove(e)
+                    execute()
+                    break
 
     def reset(self, hard_reset=False):
         self.x = player["beginningx"]

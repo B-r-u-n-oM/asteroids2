@@ -46,7 +46,7 @@ enemy = {
     "color": pyxel.COLOR_RED,
     "trisize": 4,
     "last_spawn": 0,
-    "limit_time": 5,
+    "limit_time": 4,
     "bullet_limit_time": 2
 }
 

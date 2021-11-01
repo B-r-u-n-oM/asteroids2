@@ -1,2 +1,1 @@
--refazer as funções de adicionar tiros do inimigo
--colocar colisões nos inimigos
+-fazer os inimigos alinharem suas miras para o jogador

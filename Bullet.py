@@ -7,12 +7,13 @@ from math import sin, cos, radians, sqrt
 
 
 class Bullet:
-    def __init__(self, x, y, rotation, color):
+    def __init__(self, x, y, rotation, color, owner):
         self.x = x
         self.y = y
         self.rotation = rotation
         self.speed = bullet["speed"]
         self.color = color
+        self.owner = owner
 
     def move(self):
         self.x += self.speed * cos(radians(self.rotation)) * game["frame"]
