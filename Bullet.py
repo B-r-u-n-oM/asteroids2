@@ -7,18 +7,19 @@ from math import sin, cos, radians, sqrt
 
 
 class Bullet:
-    def __init__(self, x, y, rotation):
+    def __init__(self, x, y, rotation, color):
         self.x = x
         self.y = y
         self.rotation = rotation
         self.speed = bullet["speed"]
+        self.color = color
 
     def move(self):
         self.x += self.speed * cos(radians(self.rotation)) * game["frame"]
         self.y += self.speed * sin(radians(self.rotation)) * game["frame"]
 
     def draw(self):
-        pyxel.rect(self.x, self.y, 1, 1, pyxel.COLOR_RED)
+        pyxel.rect(self.x, self.y, 1, 1, self.color)
 
     def check_limit(self):
         if (self.x < 0 or self.x > game["width"]) or (self.y < 0 or self.y > game["height"]):

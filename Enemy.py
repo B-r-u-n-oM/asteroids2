@@ -13,6 +13,7 @@ class Enemy:
         self.color = enemy["color"]
         self.speed = enemy["speed"]
         self.trisize = enemy["trisize"]
+        self.last_shot = game["elapsed_time"]
         self.tricoordinates = {
             "x1": 0, "y1": 0, "x2": 0, "y2": 0, "x3": 0, "y3": 0
         }
@@ -64,16 +65,7 @@ class Enemy:
         self.tricoordinates["y3"] = self.y + sin(radians(self.rotation + 240)) * (self.trisize/2) / cos(radians(30))
 
     def shot(self):
-        #if (game["elapsed_time"] - bullet["last_shot"]) >= bullet["limit_time"]:
-        bullet["bullets"].append(Bullet(self.x, self.y, self.rotation))
-        bullet["last_shot"] = game["elapsed_time"]
-
-    """def verify_collision(self):
-        if self.controls_active:
-            for a in asteroid["asteroids"]:
-                if sqrt((a.x - self.x) ** 2 + (a.y - self.y) ** 2) < a.trisize + self.trisize/2:
-                    self.lives -= 1
-                    self.last_death = game["elapsed_time"]
-                    self.controls_active = False
-                    self.reset(hard_reset=False)"""
+        if (game["elapsed_time"] - self.last_shot) > enemy["bullet_limit_time"]:
+            bullet["bullets"].append(Bullet(self.x, self.y, self.rotation, pyxel.COLOR_RED))
+            self.last_shot = game["elapsed_time"]
 

@@ -91,7 +91,7 @@ class Game:
                 self.player.points += b.verify_collision()
             Asteroid(), Enemy()
             for a in asteroid["asteroids"]: a.move(), a.check_limit()
-            for e in enemy["enemies"]: e.move()
+            for e in enemy["enemies"]: e.move(), e.shot()
         elif game["page"] == "records":
             pyxel.cls(pyxel.COLOR_BLACK)
             self.setpage("home", pyxel.KEY_B)

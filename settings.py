@@ -42,11 +42,11 @@ asteroid = {
 
 enemy = {
     "enemies": [],
-    "enemies_bullets": [],
     "speed": 20,
     "color": pyxel.COLOR_RED,
     "trisize": 4,
     "last_spawn": 0,
-    "limit_time": 1,
+    "limit_time": 5,
+    "bullet_limit_time": 2
 }
 

@@ -75,7 +75,7 @@ class Player:
     def shot(self):
         if self.controls_active:
             if pyxel.btnp(pyxel.KEY_SPACE) and (game["elapsed_time"] - bullet["last_shot"]) >= bullet["limit_time"]:
-                bullet["bullets"].append(Bullet(self.x, self.y, self.newrotation))
+                bullet["bullets"].append(Bullet(self.x, self.y, self.newrotation, pyxel.COLOR_GREEN))
                 bullet["last_shot"] = game["elapsed_time"]
 
     def verify_collision(self):
