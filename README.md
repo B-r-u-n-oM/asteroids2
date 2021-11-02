@@ -7,6 +7,12 @@ Start downloading pyxel extension by the command:
 
 ´´´pip install pyxel´´´
 
+```
+git status
+git add
+git commit
+```
+
 
 
 Hey there! This is a game entirely made in python, using the pyxel extension. Hope you enjoy it!
