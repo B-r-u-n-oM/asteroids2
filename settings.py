@@ -7,7 +7,9 @@ game = {
     "fps": 60,
     "frame": 1/60,
     "elapsed_time": 0,
-    "page": "home"
+    "page": "home",
+    "password": "3141",
+    "limit_of_increase": 30,
 }
 
 player = {
@@ -27,7 +29,7 @@ player = {
 
 bullet = {
     "speed": 200,
-    "limit_time": 0.1,
+    "limit_time": 0.2,
     "last_shot": 0,
     "bullets": []
 }

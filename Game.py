@@ -12,6 +12,7 @@ class Game:
         self.height = game["height"]
         self.caption = game["caption"]
         self.fps = game["fps"]
+        self.limit_of_increase = game["limit_of_increase"]
         pyxel.init(self.width, self.height, caption=self.caption, fps=self.fps, quit_key=pyxel.KEY_ESCAPE)
         pyxel.load("Minuet_in_G.pyxres")
         #pyxel.playm(0, loop=True)
@@ -32,6 +33,13 @@ class Game:
                 r[2] = r[2] + "\n" if "\n" not in r[2] else r[2]
                 line = str(r[0]) + "," + str(r[1]) + "," + r[2]
                 data.write(line)
+
+    def increase_difficulty(self):
+        if self.player.points == game["limit_of_increase"]:
+            print(self.player.points)
+            bullet["limit_time"] *= 3/2
+            asteroid["limit_time"] *= 3/2
+            game["limit_of_increase"] += 30
 
     def drawhome(self):
         pyxel.text(game["width"] / 2 - len("Welcome to the") * 2, game["height"] / 3, "Welcome to the",
@@ -82,16 +90,22 @@ class Game:
             self.setpage("records", pyxel.KEY_R)
         elif game["page"] == "playing":
             pyxel.cls(pyxel.COLOR_BLACK)
+            self.increase_difficulty()
+            ###
             if not self.player.controls_active and (game["elapsed_time"] - self.player.last_death) > self.player.respawn_time:
                 self.player.controls_active = True
+
             self.player.shot(), self.player.move(), self.player.teleport(), self.player.verify_collision()
             if self.player.lives == 0: self.setpage("gameover")
+            ####
             for b in bullet["bullets"]:
                 b.move(), b.check_limit()
                 self.player.points += b.verify_collision()
+            ####
             Enemy(), Asteroid()
             for a in asteroid["asteroids"]: a.move(), a.check_limit()
             for e in enemy["enemies"]: e.move(), e.verify_collision(), e.shot()
+            ###
         elif game["page"] == "records":
             pyxel.cls(pyxel.COLOR_BLACK)
             self.setpage("home", pyxel.KEY_B)
