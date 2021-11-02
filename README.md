@@ -14,7 +14,7 @@ python3 main.py
 ```
 
 Controls:
-- A: moves the ship to the left
+- A/←: moves the ship to the left
 - W: increases speed
 - S: decreases speed
 - D: moves the ship to the right
