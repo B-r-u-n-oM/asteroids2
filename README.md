@@ -3,6 +3,7 @@
 
 
 To play this, first you need to install all the dependecies required for running this application.
+
 Start downloading pyxel extension by the command:
 ```
 pip install pyxel
@@ -13,9 +14,14 @@ python3 main.py
 ```
 
 Special Thanks to:
--Bruno Ribeiro;
--Fábio Macêdo Mendes;
+
+- Bruno Ribeiro;
+- Fábio Macêdo Mendes;
 
 Music:
--Composition by Johann Sebastian Bach.
--Transcription by Bruno Ribeiro.
+
+- Composition by Johann Sebastian Bach.
+- Transcription by Bruno Ribeiro.
+
+
+This site was built using [GitHub Pages](https://pages.github.com/).
