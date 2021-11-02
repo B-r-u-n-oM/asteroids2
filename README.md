@@ -15,10 +15,12 @@ python3 main.py
 
 Controls:
 - A/←: moves the ship to the left
-- W: increases speed
-- S: decreases speed
-- D: moves the ship to the right
+- W↑: increases speed
+- S↓: decreases speed
+- D→: moves the ship to the right
 - Space: shoots
+
+There are other several command which are showed in the screen during the execution.
 
 Special thanks to:
 - [Bruno Ribeiro](https://github.com/BrunoRiibeiro);
