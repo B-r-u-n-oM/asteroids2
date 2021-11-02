@@ -1,5 +1,5 @@
 # Asteroids II
-## An entirely game made in python3, with pyxel extension.
+### An entirely game made in python3, with pyxel extension.
 
 
 To play this, first you need to install all the dependecies required for running this application.
