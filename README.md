@@ -19,8 +19,14 @@ Controls:
 - S↓: decreases speed
 - D→: moves the ship to the right
 - Space: shoots
-
-There are other several command which are showed in the screen during the execution.
+ 
+You can erase the leaderboard by the following command:
+```
+python3 main.py clear_records
+```
+The password is *3141*.
+ 
+There are other several commands which are shown on the screen during the execution.
 
 Special thanks to:
 - [Bruno Ribeiro](https://github.com/BrunoRiibeiro);
