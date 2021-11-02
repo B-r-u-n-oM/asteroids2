@@ -13,15 +13,12 @@ After that, clone this project to your local pc, and then, execute the file main
 python3 main.py
 ```
 
-Special Thanks to:
+Special thanks to:
 
-- Bruno Ribeiro;
-- Fábio Macêdo Mendes;
+- [Bruno Ribeiro](https://github.com/BrunoRiibeiro);
+- [Fábio Macêdo Mendes](https://github.com/fabiommendes);
 
 Music:
 
 - Composition by Johann Sebastian Bach.
 - Transcription by Bruno Ribeiro.
-
-
-This site was built using [GitHub Pages](https://pages.github.com/).
