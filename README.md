@@ -24,14 +24,17 @@ You can erase the leaderboard by the following command:
 ```
 python3 main.py clear_records
 ```
-The password is *3141*.
+The password is **3141**.
  
 There are other several commands which are shown on the screen during the execution.
+
+Music:
+- Composition by Johann Sebastian Bach.
+- Transcription by Bruno Ribeiro.
 
 Special thanks to:
 - [Bruno Ribeiro](https://github.com/BrunoRiibeiro);
 - [Fábio Macêdo Mendes](https://github.com/fabiommendes);
 
-Music:
-- Composition by Johann Sebastian Bach.
-- Transcription by Bruno Ribeiro.
+
+_Created by Bruno Martins_.
