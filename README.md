@@ -4,7 +4,7 @@
 
 To play this, first you need to install all the dependecies required for running this application.
 Start downloading pyxel extension by the command:
->pip install pyxel
+'''pip install pyxel'''
 
 
 
