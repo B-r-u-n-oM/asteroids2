@@ -37,9 +37,4 @@ Special thanks to:
 - [Fábio Macêdo Mendes](https://github.com/fabiommendes);
 
 
-
-
-@fabiommendes
-
-
 _Created by Bruno Martins_.
