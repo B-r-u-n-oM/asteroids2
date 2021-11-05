@@ -15,7 +15,7 @@ class Game:
         self.limit_of_increase = game["limit_of_increase"]
         pyxel.init(self.width, self.height, caption=self.caption, fps=self.fps, quit_key=pyxel.KEY_ESCAPE)
         pyxel.load("Minuet_in_G.pyxres")
-        #pyxel.playm(0, loop=True)
+        pyxel.playm(0, loop=True)
         pyxel.run(self.update, self.draw)
 
     def count_execution_time(self):
@@ -36,7 +36,6 @@ class Game:
 
     def increase_difficulty(self):
         if self.player.points == game["limit_of_increase"]:
-            print(self.player.points)
             bullet["limit_time"] *= 3/2
             asteroid["limit_time"] *= 3/2
             game["limit_of_increase"] += 30
