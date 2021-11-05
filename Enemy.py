@@ -22,6 +22,7 @@ class Enemy:
         self.spawn()
 
     def set_location(self):
+        # Same logic of asteroids' statement.
         if choice(["H", "V"]) == "V":
             self.x = choice([-self.trisize, game["width"] + self.trisize])
             self.y = randint(-self.trisize, game["height"] + self.trisize)
@@ -38,16 +39,19 @@ class Enemy:
         self.newrotation = self.rotation
 
     def spawn(self):
+        # Same logic for asteroids' statement.
         self.set_location()
         if (game["elapsed_time"] - enemy["last_spawn"]) >= enemy["limit_time"]:
             enemy["enemies"].append(self)
             enemy["last_spawn"] = game["elapsed_time"]
 
     def check_limit(self):
+        # If the enemy is out of the screen, delete it from the list.
         if (self.x < -self.trisize or self.x > game["width"] + self.trisize) or (self.y < -self.trisize or self.y > game["height"] + self.trisize):
             enemy["enemies"].remove(self)
 
     def draw(self):
+        # Draw triangle on the screen.
         pyxel.trib(
             self.tricoordinates["x1"], self.tricoordinates["y1"],
             self.tricoordinates["x2"], self.tricoordinates["y2"],
@@ -59,6 +63,7 @@ class Enemy:
                    pyxel.COLOR_BLACK)
 
     def move(self):
+        # Motion logic.
         self.x += self.speed * cos(radians(self.rotation)) * game["frame"]
         self.y += self.speed * sin(radians(self.rotation)) * game["frame"]
 
@@ -73,11 +78,13 @@ class Enemy:
         self.bullety = self.y + sin(radians(self.newrotation)) * ((self.trisize + 1) / 2) / cos(radians(30))
 
     def shot(self):
+        # Shoots if it's in the limit time.
         if (game["elapsed_time"] - self.last_shot) > enemy["bullet_limit_time"]:
             bullet["bullets"].append(Bullet(self.x, self.y, self.newrotation, pyxel.COLOR_RED, self))
             self.last_shot = game["elapsed_time"]
 
     def verify_collision(self):
+        # Check collision with bullets, asteroids and other enemies.
         for b in bullet["bullets"]:
             if (sqrt((b.x - self.x) ** 2 + (b.y - self.y) ** 2) < self.trisize/2) and b.owner != self:
                 enemy["enemies"].remove(self)

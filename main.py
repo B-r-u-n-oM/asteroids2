@@ -2,7 +2,7 @@
 from Game import *
 from sys import argv as cmd
 cmd.pop(0)
-
+# Logic for cleaning the leaderboard from system argv and starting the game.
 if not len(cmd):
     print("Tip: to clean all records, type 'python3 main.py clear_records'")
     Game()

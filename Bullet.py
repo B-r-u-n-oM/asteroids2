@@ -16,17 +16,21 @@ class Bullet:
         self.owner = owner
 
     def move(self):
+        # Move statement
         self.x += self.speed * cos(radians(self.rotation)) * game["frame"]
         self.y += self.speed * sin(radians(self.rotation)) * game["frame"]
 
     def draw(self):
+        # Draw a little rectangle on the screen.
         pyxel.rect(self.x, self.y, 1, 1, self.color)
 
     def check_limit(self):
+        # Delete bullet from the list if it's out of the screen.
         if (self.x < 0 or self.x > game["width"]) or (self.y < 0 or self.y > game["height"]):
             bullet["bullets"].remove(self)
 
     def verify_collision(self):
+        # Verify collision with asteroids
         points = 0
         for a in asteroid["asteroids"]:
             if sqrt((self.x - a.x) ** 2 + (self.y - a.y) ** 2) < a.size:
