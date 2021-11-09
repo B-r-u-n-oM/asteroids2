@@ -29,7 +29,7 @@ The password is **3141**.
 There are other several commands which are shown on the screen during the execution.
 
 Music:
-- Composition by Johann Sebastian Bach.
+- Menuet in G Major - Composition by Johann Sebastian Bach.
 - Transcription by Bruno Ribeiro.
 
 Special thanks to:
