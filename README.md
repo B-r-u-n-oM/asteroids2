@@ -6,7 +6,7 @@ To play this, first you need to install all the dependecies required for running
 
 Start downloading pyxel extension by the command:
 ```
-pip install pyxel
+pip install pyxel==1.4.3
 ```
 After that, clone this project to your local pc, and then, execute the file main.py by the command:
 ```
